@@ -71,6 +71,13 @@ if (-not $existingShare) {
     Write-Host "Created share:  \\$env:COMPUTERNAME\$ShareName"
 }
 
+# Normalise share permissions: Domain Admins full, Domain Users read, no Everyone.
+if (Get-SmbShareAccess -Name $ShareName | Where-Object { $_.AccountName -eq 'Everyone' }) {
+    Revoke-SmbShareAccess -Name $ShareName -Account 'Everyone' -Force | Out-Null
+}
+Grant-SmbShareAccess -Name $ShareName -Account $FullGroup -AccessRight Full -Force | Out-Null
+Grant-SmbShareAccess -Name $ShareName -Account $ReadGroup -AccessRight Read -Force | Out-Null
+
 # NTFS permissions (share permissions are set above)
 icacls $Path /grant "${ReadGroup}:(OI)(CI)(RX)" /T /C | Out-Null
 icacls $Path /grant "${FullGroup}:(OI)(CI)(F)" /T /C | Out-Null

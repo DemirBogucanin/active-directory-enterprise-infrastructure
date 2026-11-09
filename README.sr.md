@@ -161,6 +161,8 @@ Settings → Drive Maps).
 | Lokalni folder | `C:\ProdajaShare` na DC-u |
 | Akcija | Update |
 | Obuhvat | Korisnici u `OU=Prodaja` |
+| Share dozvole | `DEMO\Domain Users` — Read, `DEMO\Domain Admins` — Full |
+| NTFS dozvole | `DEMO\Domain Users` — Read & execute, `DEMO\Domain Admins` — Full control |
 
 Share se pravi na domenskom kontroleru pomocu
 [`scripts/windows/Setup-ProdajaShare.ps1`](scripts/windows/Setup-ProdajaShare.ps1):

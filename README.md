@@ -160,6 +160,8 @@ Settings → Drive Maps).
 | Local folder | `C:\ProdajaShare` on the DC |
 | Action | Update |
 | Scope | Users in `OU=Prodaja` |
+| Share permissions | `DEMO\Domain Users` — Read, `DEMO\Domain Admins` — Full |
+| NTFS permissions | `DEMO\Domain Users` — Read & execute, `DEMO\Domain Admins` — Full control |
 
 The share is created on the domain controller with
 [`scripts/windows/Setup-ProdajaShare.ps1`](scripts/windows/Setup-ProdajaShare.ps1):
