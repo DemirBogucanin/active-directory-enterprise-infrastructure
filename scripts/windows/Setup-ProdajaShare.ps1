@@ -11,7 +11,7 @@
     Run this on the domain controller (or on the file server) as Administrator.
 
 .PARAMETER Path
-    Local folder that will be shared. Default: C:\Shares\ProdajaShare
+    Local folder that will be shared. Default: C:\ProdajaShare
 
 .PARAMETER ShareName
     SMB share name. Default: ProdajaShare
@@ -30,13 +30,23 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$Path = 'C:\Shares\ProdajaShare',
+    [string]$Path = 'C:\ProdajaShare',
     [string]$ShareName = 'ProdajaShare',
     [string]$ReadGroup = "$env:USERDOMAIN\Domain Users",
     [string]$FullGroup = "$env:USERDOMAIN\Domain Admins"
 )
 
 $ErrorActionPreference = 'Stop'
+
+# If the share already exists, work with the folder it already points to.
+$existingShare = Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue
+if ($existingShare) {
+    Write-Host "Share exists:   \\$env:COMPUTERNAME\$ShareName -> $($existingShare.Path)"
+    if ($existingShare.Path -ne $Path) {
+        Write-Warning "Share points to $($existingShare.Path), not $Path. Using the existing path."
+        $Path = $existingShare.Path
+    }
+}
 
 if (-not (Test-Path -LiteralPath $Path)) {
     New-Item -ItemType Directory -Path $Path -Force | Out-Null
@@ -56,10 +66,7 @@ if (-not (Test-Path -LiteralPath $sample)) {
     Write-Host "Created sample: $sample"
 }
 
-if (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue) {
-    Write-Host "Share exists:   \\$env:COMPUTERNAME\$ShareName"
-}
-else {
+if (-not $existingShare) {
     New-SmbShare -Name $ShareName -Path $Path -FullAccess $FullGroup -ReadAccess $ReadGroup | Out-Null
     Write-Host "Created share:  \\$env:COMPUTERNAME\$ShareName"
 }

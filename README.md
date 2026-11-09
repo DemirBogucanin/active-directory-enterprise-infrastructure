@@ -157,6 +157,7 @@ Settings → Drive Maps).
 |---|---|
 | Drive letter | `P:` |
 | Location | `\\WIN-2J1EV0B70HA\ProdajaShare` |
+| Local folder | `C:\ProdajaShare` on the DC |
 | Action | Update |
 | Scope | Users in `OU=Prodaja` |
 

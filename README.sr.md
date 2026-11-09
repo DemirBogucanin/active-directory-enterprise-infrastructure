@@ -158,6 +158,7 @@ Settings → Drive Maps).
 |---|---|
 | Slovna oznaka | `P:` |
 | Lokacija | `\\WIN-2J1EV0B70HA\ProdajaShare` |
+| Lokalni folder | `C:\ProdajaShare` na DC-u |
 | Akcija | Update |
 | Obuhvat | Korisnici u `OU=Prodaja` |
 
