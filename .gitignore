@@ -1,0 +1,45 @@
+# ============================================================
+#  VMware virtual machines - NEVER commit these
+#  (a single .vmdk can be tens of gigabytes)
+# ============================================================
+*.vmdk
+*.vmem
+*.vmsn
+*.vmsd
+*.nvram
+*.vmxf
+*.vmx
+*.scoreboard
+*.log
+*.lck/
+Windows 10 x64*
+Ubuntu 64-bit*
+
+# ============================================================
+#  Secrets
+# ============================================================
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.pfx
+*.kdbx
+ost-config.php
+sssd.conf
+
+# ============================================================
+#  Local inventory output (contains real account names)
+# ============================================================
+ad-lab-report.md
+report.ps1
+
+# ============================================================
+#  OS / editors
+# ============================================================
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.swp
