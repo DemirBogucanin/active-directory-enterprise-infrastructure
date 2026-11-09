@@ -15,14 +15,16 @@
     Distinguished name of the domain, for example DC=demo,DC=lab.
 
 .PARAMETER InitialPassword
-    Optional initial password. When omitted, accounts are created disabled and
-    an administrator must enable them later.
+    Optional initial password as a SecureString. When omitted you are prompted
+    (unless -WhatIf is used). Press Enter at the prompt to create the accounts
+    disabled, so an administrator can enable them later.
 
 .EXAMPLE
     .\Import-ADUsers.ps1 -CsvPath ..\..\data\korisnici.csv -DomainDN "DC=demo,DC=lab" -WhatIf
 
 .EXAMPLE
-    .\Import-ADUsers.ps1 -CsvPath ..\..\data\korisnici.csv -DomainDN "DC=demo,DC=lab"
+    $pw = Read-Host -AsSecureString -Prompt 'Initial password'
+    .\Import-ADUsers.ps1 -CsvPath ..\..\data\korisnici.csv -DomainDN "DC=demo,DC=lab" -InitialPassword $pw
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
@@ -34,10 +36,17 @@ param(
     [ValidatePattern('^DC=')]
     [string]$DomainDN,
 
-    [string]$InitialPassword
+    [SecureString]$InitialPassword
 )
 
 Import-Module ActiveDirectory -ErrorAction Stop
+
+if (-not $PSBoundParameters.ContainsKey('InitialPassword') -and -not $WhatIfPreference) {
+    $prompted = Read-Host -AsSecureString -Prompt 'Initial password for the new users (Enter to create them disabled)'
+    if ($prompted.Length -gt 0) {
+        $InitialPassword = $prompted
+    }
+}
 
 $domain = Get-ADDomain
 $dnsRoot = $domain.DNSRoot
@@ -87,7 +96,7 @@ $results = foreach ($row in $rows) {
     }
 
     if ($InitialPassword) {
-        $newUser.AccountPassword = ConvertTo-SecureString -String $InitialPassword -AsPlainText -Force
+        $newUser.AccountPassword = $InitialPassword
         $newUser.Enabled = $true
         $newUser.ChangePasswordAtLogon = $true
     }

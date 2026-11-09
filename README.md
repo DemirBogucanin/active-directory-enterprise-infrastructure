@@ -127,7 +127,7 @@ Users are provisioned from [`data/korisnici.csv`](data/korisnici.csv) with
 | Haris Sokolovic | `hsokolovic` | `IT_Sektor` | IT |
 | Nejra Imamovic | `nimamovic` | `Uprava` | Uprava |
 
-**CSV schema**
+### CSV schema
 
 ```csv
 Firstname,Lastname,Username,OU,Department
@@ -189,6 +189,8 @@ Create the users from the CSV:
     -CsvPath .\data\korisnici.csv `
     -DomainDN "DC=demo,DC=lab"
 ```
+
+Press **Enter** at the password prompt to create the accounts disabled instead.
 
 Create the `Prodaja` file share used by the drive-mapping GPO:
 

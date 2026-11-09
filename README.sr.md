@@ -128,7 +128,7 @@ Korisnici se kreiraju iz [`data/korisnici.csv`](data/korisnici.csv) pomocu
 | Haris Sokolovic | `hsokolovic` | `IT_Sektor` | IT |
 | Nejra Imamovic | `nimamovic` | `Uprava` | Uprava |
 
-**Shema CSV fajla**
+### Shema CSV fajla
 
 ```csv
 Firstname,Lastname,Username,OU,Department
@@ -189,6 +189,8 @@ Kreiranje korisnika iz CSV-a:
     -CsvPath .\data\korisnici.csv `
     -DomainDN "DC=demo,DC=lab"
 ```
+
+Pritisni **Enter** na promptu za lozinku da nalozi budu kreirani onemoguceni.
 
 Napravi `Prodaja` file share koji koristi GPO za mapiranje drajva:
 
