@@ -145,7 +145,30 @@ non-ASCII characters correctly.
 | `Default Domain Controllers Policy` | Enabled | DC baseline |
 | `GPO_Wallpaper` | Enabled | Corporate desktop wallpaper |
 | `GPO_Zabrana_ControlPanel` | Enabled | Blocks Control Panel for standard users |
-| `GPO_Drive_Mapping_Prodaja` | Enabled | Maps a network drive for the `Prodaja` OU via Group Policy Preferences |
+| `GPO_Drive_Mapping_Prodaja` | Enabled | Maps `P:` to `\\WIN-2J1EV0B70HA\ProdajaShare` for the `Prodaja` OU via Group Policy Preferences |
+
+## Drive mapping
+
+Users in `OU=Prodaja` receive a mapped network drive through
+`GPO_Drive_Mapping_Prodaja` (User Configuration → Preferences → Windows
+Settings → Drive Maps).
+
+| Setting | Value |
+|---|---|
+| Drive letter | `P:` |
+| Location | `\\WIN-2J1EV0B70HA\ProdajaShare` |
+| Action | Update |
+| Scope | Users in `OU=Prodaja` |
+
+The share is created on the domain controller with
+[`scripts/windows/Setup-ProdajaShare.ps1`](scripts/windows/Setup-ProdajaShare.ps1):
+
+```powershell
+.\scripts\windows\Setup-ProdajaShare.ps1
+```
+
+For lab simplicity the share is hosted on the DC; in production it would live on
+a dedicated member file server.
 
 ## Automation
 
@@ -162,6 +185,12 @@ Create the users from the CSV:
 .\scripts\windows\Import-ADUsers.ps1 `
     -CsvPath .\data\korisnici.csv `
     -DomainDN "DC=demo,DC=lab"
+```
+
+Create the `Prodaja` file share used by the drive-mapping GPO:
+
+```powershell
+.\scripts\windows\Setup-ProdajaShare.ps1
 ```
 
 Collect a read-only inventory of the whole lab:
@@ -189,6 +218,7 @@ The report is written to the current user's Desktop and copied to the clipboard.
 | Organizational Units (`IT_Sektor`, `Prodaja`, `Uprava`) | ✅ Done |
 | Users provisioned from CSV | ✅ Done |
 | Group Policy (wallpaper, Control Panel, drive mapping) | ✅ Done |
+| File share `ProdajaShare` on the DC | ✅ Done |
 | Security groups and group-based access | ⬜ Pending |
 | Test plan and final documentation | ⬜ Pending |
 
@@ -235,7 +265,8 @@ The report is written to the current user's Desktop and copied to the clipboard.
 ├── scripts/
 │   └── windows/
 │       ├── Import-ADUsers.ps1
-│       └── Get-ADLabReport.ps1
+│       ├── Get-ADLabReport.ps1
+│       └── Setup-ProdajaShare.ps1
 ├── screenshots/
 └── .github/workflows/lint.yml
 ```

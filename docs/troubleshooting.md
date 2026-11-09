@@ -14,6 +14,8 @@ Problemi na koje smo naisli tokom izgradnje AD laba i kako su reseni.
 | DHCP klijent ne dobija adresu | scope nije autorizovan u AD | `Get-DhcpServerInDC`, pa `Add-DhcpServerInDC` |
 | GPO se ne primenjuje | GPO nije linkovan na OU ili nije pokrenut `gpupdate` | `gpupdate /force`, `gpresult /r` |
 | Mapiran drajv se ne pojavljuje | GPO Preferences nije primenjen / korisnik nije u pravoj OU | proveriti link GPO-a i `gpresult /r` |
+| „We can't sign you in... domain isn't available“ | klijent je na NAT mrezi, a DC na bridged | prebaciti adapter na **Bridged** i `ipconfig /renew` |
+| `P:` drajv ne radi posle prelaska na bridged | GPO pokazuje na staru NAT adresu `192.168.72.128` | share na DC + GPO Location `\\WIN-2J1EV0B70HA\ProdajaShare` |
 | „Clock skew too great“ | satovi nisu uskladeni | `w32tm /resync`, `timedatectl` na klijentu |
 | Domain join ne prolazi | pogresan DNS ili vreme | DNS = DC, vreme u toleranciji od 5 minuta |
 

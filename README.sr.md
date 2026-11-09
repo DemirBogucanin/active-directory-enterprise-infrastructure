@@ -146,7 +146,29 @@ procitao ne-ASCII karaktere.
 | `Default Domain Controllers Policy` | Enabled | Osnovna politika za DC |
 | `GPO_Wallpaper` | Enabled | Pozadina radne povrsine |
 | `GPO_Zabrana_ControlPanel` | Enabled | Zabrana Control Panel-a standardnim korisnicima |
-| `GPO_Drive_Mapping_Prodaja` | Enabled | Mapira mrezni drajv za `Prodaja` OU preko Group Policy Preferences |
+| `GPO_Drive_Mapping_Prodaja` | Enabled | Mapira `P:` na `\\WIN-2J1EV0B70HA\ProdajaShare` za `Prodaja` OU preko Group Policy Preferences |
+
+## Mapiranje drajva
+
+Korisnici u `OU=Prodaja` dobijaju mrezni drajv preko
+`GPO_Drive_Mapping_Prodaja` (User Configuration → Preferences → Windows
+Settings → Drive Maps).
+
+| Postavka | Vrednost |
+|---|---|
+| Slovna oznaka | `P:` |
+| Lokacija | `\\WIN-2J1EV0B70HA\ProdajaShare` |
+| Akcija | Update |
+| Obuhvat | Korisnici u `OU=Prodaja` |
+
+Share se pravi na domenskom kontroleru pomocu
+[`scripts/windows/Setup-ProdajaShare.ps1`](scripts/windows/Setup-ProdajaShare.ps1):
+
+```powershell
+.\scripts\windows\Setup-ProdajaShare.ps1
+```
+
+Za potrebe laba share je na DC-u; u produkciji bi bio na namenskom file serveru.
 
 ## Automatizacija
 
@@ -163,6 +185,12 @@ Kreiranje korisnika iz CSV-a:
 .\scripts\windows\Import-ADUsers.ps1 `
     -CsvPath .\data\korisnici.csv `
     -DomainDN "DC=demo,DC=lab"
+```
+
+Napravi `Prodaja` file share koji koristi GPO za mapiranje drajva:
+
+```powershell
+.\scripts\windows\Setup-ProdajaShare.ps1
 ```
 
 Read-only inventar celog okruzenja:
@@ -190,6 +218,7 @@ Izvestaj se upisuje na Desktop i kopira u clipboard.
 | Organizacione jedinice (`IT_Sektor`, `Prodaja`, `Uprava`) | ✅ Gotovo |
 | Korisnici kreirani iz CSV-a | ✅ Gotovo |
 | Group Policy (pozadina, Control Panel, mapiranje drajva) | ✅ Gotovo |
+| File share `ProdajaShare` na DC-u | ✅ Gotovo |
 | Security grupe i pristup po grupama | ⬜ Sledi |
 | Test plan i finalna dokumentacija | ⬜ Sledi |
 
@@ -235,7 +264,8 @@ Izvestaj se upisuje na Desktop i kopira u clipboard.
 ├── scripts/
 │   └── windows/
 │       ├── Import-ADUsers.ps1
-│       └── Get-ADLabReport.ps1
+│       ├── Get-ADLabReport.ps1
+│       └── Setup-ProdajaShare.ps1
 ├── screenshots/
 └── .github/workflows/lint.yml
 ```
