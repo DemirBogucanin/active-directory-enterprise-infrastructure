@@ -9,6 +9,7 @@ politikama.
 ![Domen](https://img.shields.io/badge/domen-demo.lab-informational)
 ![Status](https://img.shields.io/badge/status-u%20toku-yellow)
 ![Licenca](https://img.shields.io/badge/licenca-MIT%20%2B%20CC%20BY%204.0-green)
+![Lint](https://github.com/DemirBogucanin/active-directory-enterprise-infrastructure/actions/workflows/lint.yml/badge.svg)
 
 ---
 

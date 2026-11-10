@@ -8,6 +8,7 @@ Organizational Units, users provisioned from CSV, and Group Policy.
 ![Domain](https://img.shields.io/badge/domain-demo.lab-informational)
 ![Status](https://img.shields.io/badge/status-in%20progress-yellow)
 ![License](https://img.shields.io/badge/license-MIT%20%2B%20CC%20BY%204.0-green)
+![Lint](https://github.com/DemirBogucanin/active-directory-enterprise-infrastructure/actions/workflows/lint.yml/badge.svg)
 
 ---
 
